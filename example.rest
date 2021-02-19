@@ -1,0 +1,9 @@
+### Should not work
+GET http://localhost:8000/
+Accept: application/json
+Authorization: foo bar
+
+### Should Work
+GET http://localhost:8000/
+Accept: application/json
+Authorization: Basic {{username}} {{password}}

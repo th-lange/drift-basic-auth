@@ -1,0 +1,46 @@
+parameters:
+    kernel.secret: yoursecretshouldbehere
+    app_path: "../.."
+
+framework:
+    form: false
+    assets: false
+    session: false
+    translator: false
+    php_errors:
+        log: false
+
+#
+# Security Settings
+#
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: auto
+    providers:
+        users_in_memory:
+            memory:
+                users:
+#                    user: admin pw: kitten
+                    admin: {password: '$argon2id$v=19$m=65536,t=4,p=1$89xfALo6vIJQFUPfa0D7Tg$6L+0UHGNSoDpwsg3GuHeZADb5fvobAZ425tDrdFxd1M', roles: ['ROLE_ADMIN']}
+    firewalls:
+        main:
+            anonymous: false
+            pattern: ^/
+            http_basic:
+                realm: Secured Area
+                provider: users_in_memory
+
+# config/services.yaml
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    #
+    # Controllers
+    #
+    App\Controller\:
+        resource : "%app_path%/src/Controller/*"
+        tags:
+            - {name: controller.service_arguments}
